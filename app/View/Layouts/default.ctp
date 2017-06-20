@@ -14,50 +14,47 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-$cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework');
-$cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 ?>
 <!DOCTYPE html>
 <html>
-<head>
-	<?php echo $this->Html->charset(); ?>
-	<title>
-		<?php echo $cakeDescription ?>:
-		<?php echo $this->fetch('title'); ?>
-	</title>
-	<?php
-		echo $this->Html->meta('icon');
+	<head>
+		<?php echo $this->Html->charset(); ?>
+		<title>
+			<?php echo $this->fetch('title'); ?>
+		</title>
+	   
+	    <!-- javascript -->
+	    <?php echo $this->Html->script('jquery'); ?>
+	    <?php echo $this->Html->script('bootstrap'); ?>
+        <?php echo $this->Html->script('bookshop'); ?>
+        <!-- css -->
+		<?php echo $this->Html->css('bootstrap.min'); ?>
+		<?php echo $this->Html->css('bookshop'); ?>
+		<?php
+			echo $this->fetch('meta');
+			echo $this->fetch('css');
+			echo $this->fetch('script');
+		?>
 
-		echo $this->Html->css('cake.generic');
-
-		echo $this->fetch('meta');
-		echo $this->fetch('css');
-		echo $this->fetch('script');
-	?>
-</head>
-<body>
-	<div id="container">
+	</head>
+	<body>
 		<div id="header">
-			<h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1>
+			
 		</div>
 		<div id="content">
-
-			<?php echo $this->Session->flash(); ?>
-
-			<?php echo $this->fetch('content'); ?>
+			<div class="container">
+                <div class="row">
+                	<div class="content col-md-9 col-sm-9 col-xs-12">
+			            <?php echo $this->fetch('content'); ?>
+			        </div>
+			        <div class="sidebar col-md-3 col-sm-3 col-xs-12">
+			        	
+			        </div>
+			    </div>
+			</div>
 		</div>
 		<div id="footer">
-			<?php echo $this->Html->link(
-					$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
-					'http://www.cakephp.org/',
-					array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered')
-				);
-			?>
-			<p>
-				<?php echo $cakeVersion; ?>
-			</p>
-		</div>
-	</div>
-	<?php echo $this->element('sql_dump'); ?>
-</body>
+			
+		</div>	
+	</body>
 </html>
