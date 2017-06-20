@@ -19,6 +19,7 @@
 <html>
 	<head>
 		<?php echo $this->Html->charset(); ?>
+		
 		<title>
 			<?php echo $this->fetch('title'); ?>
 		</title>
