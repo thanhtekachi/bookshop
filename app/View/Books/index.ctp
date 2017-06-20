@@ -1,82 +1,59 @@
-<div class="books index">
-	<h2><?php echo __('Books'); ?></h2>
-	<table cellpadding="0" cellspacing="0">
-	<thead>
-	<tr>
-			<th><?php echo $this->Paginator->sort('id'); ?></th>
-			<th><?php echo $this->Paginator->sort('category_id'); ?></th>
-			<th><?php echo $this->Paginator->sort('title'); ?></th>
-			<th><?php echo $this->Paginator->sort('slug'); ?></th>
-			<th><?php echo $this->Paginator->sort('image'); ?></th>
-			<th><?php echo $this->Paginator->sort('info'); ?></th>
-			<th><?php echo $this->Paginator->sort('price'); ?></th>
-			<th><?php echo $this->Paginator->sort('sale_price'); ?></th>
-			<th><?php echo $this->Paginator->sort('pages'); ?></th>
-			<th><?php echo $this->Paginator->sort('publisher'); ?></th>
-			<th><?php echo $this->Paginator->sort('publish_date'); ?></th>
-			<th><?php echo $this->Paginator->sort('hot'); ?></th>
-			<th><?php echo $this->Paginator->sort('link_download'); ?></th>
-			<th><?php echo $this->Paginator->sort('comment_count'); ?></th>
-			<th><?php echo $this->Paginator->sort('published'); ?></th>
-			<th><?php echo $this->Paginator->sort('created'); ?></th>
-			<th><?php echo $this->Paginator->sort('modified'); ?></th>
-			<th class="actions"><?php echo __('Actions'); ?></th>
-	</tr>
-	</thead>
-	<tbody>
-	<?php foreach ($books as $book): ?>
-	<tr>
-		<td><?php echo h($book['Book']['id']); ?>&nbsp;</td>
-		<td>
-			<?php echo $this->Html->link($book['Category']['name'], array('controller' => 'categories', 'action' => 'view', $book['Category']['id'])); ?>
-		</td>
-		<td><?php echo h($book['Book']['title']); ?>&nbsp;</td>
-		<td><?php echo h($book['Book']['slug']); ?>&nbsp;</td>
-		<td><?php echo h($book['Book']['image']); ?>&nbsp;</td>
-		<td><?php echo h($book['Book']['info']); ?>&nbsp;</td>
-		<td><?php echo h($book['Book']['price']); ?>&nbsp;</td>
-		<td><?php echo h($book['Book']['sale_price']); ?>&nbsp;</td>
-		<td><?php echo h($book['Book']['pages']); ?>&nbsp;</td>
-		<td><?php echo h($book['Book']['publisher']); ?>&nbsp;</td>
-		<td><?php echo h($book['Book']['publish_date']); ?>&nbsp;</td>
-		<td><?php echo h($book['Book']['hot']); ?>&nbsp;</td>
-		<td><?php echo h($book['Book']['link_download']); ?>&nbsp;</td>
-		<td><?php echo h($book['Book']['comment_count']); ?>&nbsp;</td>
-		<td><?php echo h($book['Book']['published']); ?>&nbsp;</td>
-		<td><?php echo h($book['Book']['created']); ?>&nbsp;</td>
-		<td><?php echo h($book['Book']['modified']); ?>&nbsp;</td>
-		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $book['Book']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $book['Book']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $book['Book']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $book['Book']['id']))); ?>
-		</td>
-	</tr>
-<?php endforeach; ?>
-	</tbody>
-	</table>
-	<p>
-	<?php
-	echo $this->Paginator->counter(array(
-		'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
-	));
-	?>	</p>
-	<div class="paging">
-	<?php
-		echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
-		echo $this->Paginator->numbers(array('separator' => ''));
-		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
-	?>
-	</div>
-</div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('New Book'), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(__('List Categories'), array('controller' => 'categories', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Category'), array('controller' => 'categories', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Comments'), array('controller' => 'comments', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Comment'), array('controller' => 'comments', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Writers'), array('controller' => 'writers', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Writer'), array('controller' => 'writers', 'action' => 'add')); ?> </li>
-	</ul>
+<div class="box-index">
+    <div id="Carousel" class="carousel slide">
+        <ol class="carousel-indicators">
+            <li data-target="#Carousel" data-slide-to="0" class="active"></li>
+            <li data-target="#Carousel" data-slide-to="1"></li>
+            <li data-target="#Carousel" data-slide-to="2"></li>
+        </ol>
+        <!-- Carousel items -->
+        <div class="carousel-inner">
+            <div class="item active">
+                <div class="row">
+                    <?php for ($n=0; $n <4 ; $n++) { ?>
+                        <div class="col-md-3">
+                            <?php echo $this->html->image($books[$n]['Book']['image']);?>
+                            <div class = "info" style ="text-align:center;">
+                                <h5><?php echo $this->Html->link($books[$n]['Book']['title'],'/'.$books[$n]['Book']['slug']); ?></h5>
+                                <p class = "writer">Tác giả: <?php echo h($books[$n]['Writer'][0]['name']); ?></p>
+                            </div>
+                        </div>  
+                    <?php }?>
+                </div>
+                <!--.row-->
+            </div>
+            <!--.item-->
+            <div class="item">
+                <div class="row">
+                    <?php for ($n=4; $n <8 ; $n++) { ?>
+                        <div class="col-md-3">
+                            <?php echo $this->html->image($books[$n]['Book']['image']);?>
+                                <div class = "info" >
+                                    <h5><?php echo $this->Html->link($books[$n]['Book']['title'],'/'.$books[$n]['Book']['slug']); ?></h5>
+                                    <p class = "writer">Tác giả: <?php echo h($books[$n]['Writer'][0]['name']); ?></p>
+                                </div>
+                        </div>  
+                    <?php }?>
+                </div>
+                <!--.row-->
+            </div>
+            <!--.item-->
+            <div class="item">
+                <div class="row">
+                    <?php for ($n=8; $n <12 ; $n++) { ?>
+                        <div class="col-md-3">
+                            <?php echo $this->html->image($books[$n]['Book']['image']);?>
+                                <div class = "info" style ="text-align:center;">
+                                    <h5><?php echo $this->Html->link($books[$n]['Book']['title'],'/'.$books[$n]['Book']['slug']); ?></h5>
+                                    <p class = "writer">Tác giả: <?php echo h($books[$n]['Writer'][0]['name']); ?></p>
+                                </div>
+                        </div>  
+                    <?php }?>
+                </div>
+                <!--.row-->
+            </div>
+            <!--.item-->
+        </div>
+        <!--.carousel-inner-->
+        <a data-slide="prev" href="#Carousel" class="left carousel-control">‹</a> <a data-slide="next" href="#Carousel" class="right carousel-control">›</a>
+    </div>
 </div>
