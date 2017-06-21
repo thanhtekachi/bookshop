@@ -23,14 +23,17 @@
 		<title>
 			<?php echo $this->fetch('title'); ?>
 		</title>
-	   
+	
 	    <!-- javascript -->
 	    <?php echo $this->Html->script('jquery'); ?>
 	    <?php echo $this->Html->script('bootstrap'); ?>
         <?php echo $this->Html->script('bookshop'); ?>
+
         <!-- css -->
+        <?php echo $this->Html->css('font-awesome.min'); ?>
 		<?php echo $this->Html->css('bootstrap.min'); ?>
 		<?php echo $this->Html->css('bookshop'); ?>
+		
 		<?php
 			echo $this->fetch('meta');
 			echo $this->fetch('css');
@@ -40,7 +43,7 @@
 	</head>
 	<body>
 		<div id="header">
-			
+			<?php echo $this->element('header'); ?>
 		</div>
 		<div id="content">
 			<div class="container">
@@ -55,7 +58,7 @@
 			</div>
 		</div>
 		<div id="footer">
-			
+			<?php echo $this->element('footer'); ?>
 		</div>	
 	</body>
 </html>
