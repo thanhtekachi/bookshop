@@ -7,22 +7,32 @@ App::uses('AppController', 'Controller');
  * @property PaginatorComponent $Paginator
  */
 class CategoriesController extends AppController {
-
-/**
- * Components
- *
- * @var array
- */
-	public $components = array('Paginator');
-
+   
+	var $helpers = array('Paginator','Html');
+	var $paginate = array();
+	
 /**
  * index method
  *
  * @return void
  */
-	public function index() {
-		$this->Category->recursive = 0;
-		$this->set('categories', $this->Paginator->paginate());
+	public function index($slug = null) {
+		
+		$category_id = $this->Category->find('first',array(
+															'conditions' => array('slug' => $slug),
+															'fields'     => 'id'
+													)
+										);
+		
+		//get all book belong to category and paginate
+		$this->loadModel('Book');
+		$this->paginate = array(
+								'limit' => 4,
+								'order' => array('id' => 'desc'),
+								'conditions' => array('category_id' => $category_id['Category']['id'])
+		);
+		$list_book = $this->paginate('Book');
+		$this->set('list_book',$list_book);
 	}
 
 /**
