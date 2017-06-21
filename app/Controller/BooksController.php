@@ -21,8 +21,26 @@ class BooksController extends AppController {
  * @return void
  */
 	public function index() {
-		$this->Book->recursive = 0;
-		$this->set('books', $this->Paginator->paginate());
+		
+        // Get 12 best-selling books
+		$hot_book = $this->Book->find('all',array(
+				                                 'limit' => 12,
+				                                 'conditions' => array('hot' => 1)
+		                                    )
+				                 );
+		
+		//Get books by category
+		$this->loadModel('Category');
+		$list_category = $this->Category->find('all');
+		$list_book_category = $this->Book->find('all',array(
+						                                 'order' => 'Book.created DESC',
+						                                 'conditions' => array(
+						                                 		             'NOT' => array('Book.hot' => 1)
+						                                                 )
+		                                    		  )
+				                 		    );
+		
+		$this->set(compact('hot_book','list_book_category', 'list_category'));
 	}
 
 /**
