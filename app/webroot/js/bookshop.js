@@ -11,5 +11,11 @@ $(document).ready(function() {
         function(){
             $(this).find('.caption').slideUp(250); //.fadeOut(205)
         }
-    ); 
+    );
+    
+    $('.nav .dropdown').hover(function() {
+            $(this).addClass('open');
+        }, function() {
+            $(this).removeClass('open');
+    });
 })
