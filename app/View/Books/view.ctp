@@ -1,175 +1,97 @@
-<div class="books view">
-<h2><?php echo __('Book'); ?></h2>
-	<dl>
-		<dt><?php echo __('Id'); ?></dt>
-		<dd>
-			<?php echo h($book['Book']['id']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Category'); ?></dt>
-		<dd>
-			<?php echo $this->Html->link($book['Category']['name'], array('controller' => 'categories', 'action' => 'view', $book['Category']['id'])); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Title'); ?></dt>
-		<dd>
-			<?php echo h($book['Book']['title']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Slug'); ?></dt>
-		<dd>
-			<?php echo h($book['Book']['slug']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Image'); ?></dt>
-		<dd>
-			<?php echo h($book['Book']['image']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Info'); ?></dt>
-		<dd>
-			<?php echo h($book['Book']['info']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Price'); ?></dt>
-		<dd>
-			<?php echo h($book['Book']['price']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Sale Price'); ?></dt>
-		<dd>
-			<?php echo h($book['Book']['sale_price']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Pages'); ?></dt>
-		<dd>
-			<?php echo h($book['Book']['pages']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Publisher'); ?></dt>
-		<dd>
-			<?php echo h($book['Book']['publisher']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Publish Date'); ?></dt>
-		<dd>
-			<?php echo h($book['Book']['publish_date']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Hot'); ?></dt>
-		<dd>
-			<?php echo h($book['Book']['hot']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Link Download'); ?></dt>
-		<dd>
-			<?php echo h($book['Book']['link_download']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Comment Count'); ?></dt>
-		<dd>
-			<?php echo h($book['Book']['comment_count']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Published'); ?></dt>
-		<dd>
-			<?php echo h($book['Book']['published']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Created'); ?></dt>
-		<dd>
-			<?php echo h($book['Book']['created']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Modified'); ?></dt>
-		<dd>
-			<?php echo h($book['Book']['modified']); ?>
-			&nbsp;
-		</dd>
-	</dl>
-</div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Edit Book'), array('action' => 'edit', $book['Book']['id'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('Delete Book'), array('action' => 'delete', $book['Book']['id']), array(), __('Are you sure you want to delete # %s?', $book['Book']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('List Books'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Book'), array('action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Categories'), array('controller' => 'categories', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Category'), array('controller' => 'categories', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Comments'), array('controller' => 'comments', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Comment'), array('controller' => 'comments', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Writers'), array('controller' => 'writers', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Writer'), array('controller' => 'writers', 'action' => 'add')); ?> </li>
-	</ul>
-</div>
-<div class="related">
-	<h3><?php echo __('Related Comments'); ?></h3>
-	<?php if (!empty($book['Comment'])): ?>
-	<table cellpadding = "0" cellspacing = "0">
-	<tr>
-		<th><?php echo __('Id'); ?></th>
-		<th><?php echo __('User Id'); ?></th>
-		<th><?php echo __('Book Id'); ?></th>
-		<th><?php echo __('Content'); ?></th>
-		<th><?php echo __('Created'); ?></th>
-		<th class="actions"><?php echo __('Actions'); ?></th>
-	</tr>
-	<?php foreach ($book['Comment'] as $comment): ?>
-		<tr>
-			<td><?php echo $comment['id']; ?></td>
-			<td><?php echo $comment['user_id']; ?></td>
-			<td><?php echo $comment['book_id']; ?></td>
-			<td><?php echo $comment['content']; ?></td>
-			<td><?php echo $comment['created']; ?></td>
-			<td class="actions">
-				<?php echo $this->Html->link(__('View'), array('controller' => 'comments', 'action' => 'view', $comment['id'])); ?>
-				<?php echo $this->Html->link(__('Edit'), array('controller' => 'comments', 'action' => 'edit', $comment['id'])); ?>
-				<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'comments', 'action' => 'delete', $comment['id']), array(), __('Are you sure you want to delete # %s?', $comment['id'])); ?>
-			</td>
-		</tr>
-	<?php endforeach; ?>
-	</table>
-<?php endif; ?>
-
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('New Comment'), array('controller' => 'comments', 'action' => 'add')); ?> </li>
-		</ul>
+<!-- book info -->
+<div class="book-info">
+	<h4 class="panel-heading"><i class="glyphicon glyphicon-bookmark"></i> Chi tiết</h4>
+	<div class="row"> 
+		<div class="col col-lg-3">
+	    	<div class="book-thumbnail">
+	      		<?php echo $this->Html->image($book_info['Book']['image']); ?>
+	    	</div>
+ 		</div>
+ 		<div class="col col-lg-9">
+ 			<div class="book-info">
+	        	<h4><?php echo h($book_info['Book']['title']); ?></h4>
+	        	<p>Tác giả :
+	        		<?php 
+	        		    $writer_count = 0;
+	        	    	if(isset($book_info['Writer'])&&!empty($book_info['Writer'])){
+	        	    		foreach ($book_info['Writer'] as $value) {
+                                if ($value === end($book_info['Writer'])){
+                                	echo $this->Html->link($value['name'],'/writers/' . $value['slug'] ) ;
+                                } 
+                                else {
+                                	echo $this->Html->link($value['name'],'/writers/' . $value['slug'] ) . ' , ';
+                                }
+                                                                  
+	        	    		}
+	        	    	}
+	        	    	else{
+	        	    		echo " Đang cập nhât";
+	        	    	}
+	        	    ?>
+	            </p>
+	        	<p>Nhận xét : <?php echo $book_info['Book']['comment_count'] ?></p>
+	        	<p>Giá bìa : <?php echo $book_info['Book']['price'] ?></p>
+	        	<p>Giá bán: <?php echo $book_info['Book']['sale_price'] ?></p>
+	    	</div>
+ 		</div>
+ 		<div class="book-content col-lg-12">
+ 			<h4>Giới thiệu:</h4>
+ 			<div class = "book-info col-lg-9" style = "text-indent: 20px;">
+ 				<p><?php echo h($book_info['Book']['info']); ?></p>
+ 		    </div>
+ 			
+ 			<div class="col col-lg-7">
+	 			<table class="table table-striped table-bordered">
+		        	<thead>
+		          		<tr>
+		            		<th>Thông tin chi tiết</th>
+		          		</tr>
+		        	</thead>
+		        	<tbody>
+		          		<tr>
+		           			<td>Nhà xuất bản:</td>
+		            		<td><?php echo h($book_info['Book']['publisher']); ?></td>
+		          		</tr>
+		          		<tr>
+		          			<td>Ngày xuất bản</td>
+		           			 <td><?php echo h($book_info['Book']['publish_date']); ?></td>
+		          		</tr>
+		          		<tr>
+		          			<td>Số trang:</td>
+		            		<td><?php echo h($book_info['Book']['pages']); ?></td>
+		          		</tr>
+		        	</tbody>
+		    	</table>
+	    	</div>
+ 		</div>
 	</div>
-</div>
-<div class="related">
-	<h3><?php echo __('Related Writers'); ?></h3>
-	<?php if (!empty($book['Writer'])): ?>
-	<table cellpadding = "0" cellspacing = "0">
-	<tr>
-		<th><?php echo __('Id'); ?></th>
-		<th><?php echo __('Name'); ?></th>
-		<th><?php echo __('Slug'); ?></th>
-		<th><?php echo __('Biography'); ?></th>
-		<th><?php echo __('Created'); ?></th>
-		<th class="actions"><?php echo __('Actions'); ?></th>
-	</tr>
-	<?php foreach ($book['Writer'] as $writer): ?>
-		<tr>
-			<td><?php echo $writer['id']; ?></td>
-			<td><?php echo $writer['name']; ?></td>
-			<td><?php echo $writer['slug']; ?></td>
-			<td><?php echo $writer['biography']; ?></td>
-			<td><?php echo $writer['created']; ?></td>
-			<td class="actions">
-				<?php echo $this->Html->link(__('View'), array('controller' => 'writers', 'action' => 'view', $writer['id'])); ?>
-				<?php echo $this->Html->link(__('Edit'), array('controller' => 'writers', 'action' => 'edit', $writer['id'])); ?>
-				<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'writers', 'action' => 'delete', $writer['id']), array(), __('Are you sure you want to delete # %s?', $writer['id'])); ?>
-			</td>
-		</tr>
-	<?php endforeach; ?>
-	</table>
-<?php endif; ?>
+</div> 
+<!-- end book info -->
 
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('New Writer'), array('controller' => 'writers', 'action' => 'add')); ?> </li>
-		</ul>
-	</div>
-</div>
+<!-- related books -->
+<div class="related-book">
+	<h4 class="panel-heading"><i class="glyphicon glyphicon-list-alt"></i> Sách liên quan</h4>
+	<div class="row">
+		<div class="col col-lg-9">
+            <?php foreach ($related_books as $related_book) {?>
+            	<div class = "col col-lg-3" style ="text-align:center;">
+            		<?php echo $this->Html->image($related_book['Book']['image'],array('width'=>'180px','height'=>'250px')); ?>
+              		<h5><?php echo $this->Html->link($related_book['Book']['title'],'/'.$related_book['Book']['slug']); ?></h5>
+       				<p class = "writer">Tác giả: 
+       					<?php foreach ($related_book['Writer'] as $value) {
+           						if ($value === end($related_book['Writer'])){
+                                    echo $this->Html->link($value['name'],'/writers/' . $value['slug'] ) ;
+                                } 
+                                else {
+                                    echo $this->Html->link($value['name'],'/writers/' . $value['slug'] ) . ' , ';
+                                }
+       				          } 
+       				    ?>
+       			    </p>
+       				<p class="price">Giá: <?php echo $this->Number->currency($related_book['Book']['sale_price'],' VND',array('places'=>0,'wholePosition'=>'after')); ?></p>
+            	</div>
+            <?php }?>
+        </div>
+    </div>
+</div> 
+<!-- end related books --> 
