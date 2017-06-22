@@ -40,22 +40,31 @@ class BooksController extends AppController {
 		                                    		  )
 				                 		    );
 		
-		$this->set(compact('hot_book','list_book_category', 'list_category'));
+		$this->set(compact('hot_book', 'list_book_category', 'list_category'));
 	}
 
 /**
  * view method
- *
- * @throws NotFoundException
- * @param string $id
+ * @param string $slug
  * @return void
  */
-	public function view($id = null) {
-		if (!$this->Book->exists($id)) {
-			throw new NotFoundException(__('Invalid book'));
-		}
-		$options = array('conditions' => array('Book.' . $this->Book->primaryKey => $id));
-		$this->set('book', $this->Book->find('first', $options));
+	public function view($slug = null) {
+		
+		//get book info by slug
+		$book_info = $this->Book->find('first',array('conditions' => array('Book.slug' => $slug)));
+		
+		//get related books
+		$category_id = $book_info['Book']['category_id'];
+		$related_books = $this->Book->find('all',array(
+				                                      'conditions' => array(
+				                                      		               'Book.category_id' => $category_id,
+				                                      		               'NOT' => array('Book.slug' => $slug)
+				                                                      ),
+				                                       'limit' => 4
+				 
+		 										)
+									  );
+		$this->set(compact('book_info' , 'related_books'));
 	}
 
 /**

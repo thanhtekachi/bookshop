@@ -26,6 +26,7 @@
  */
 	Router::connect('/', array('controller' => 'books', 'action' => 'index', 'home'));
 	Router::connect('/categories/:category_name',array('controller'=>'categories','action'=>'index'),array('pass'=>array('category_name')));
+	Router::connect('/:book_title',array('controller'=>'books','action'=>'view'),array('pass'=>array('book_title')));
 /**
  * ...and connect the rest of 'Pages' controller's URLs.
  */
