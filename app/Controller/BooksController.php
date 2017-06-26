@@ -8,6 +8,8 @@ App::uses('AppController', 'Controller');
  */
 class BooksController extends AppController {
 
+ 
+
 /**
  * Components
  *
@@ -63,8 +65,47 @@ class BooksController extends AppController {
 				                                       'limit' => 4
 				 
 		 										)
-									  );
+									    );
 		$this->set(compact('book_info' , 'related_books'));
+	}
+
+/**
+ * search method
+ *
+ * @return void
+ */
+
+	public function search() {
+
+		if (isset($this->data['book']['keyword'])) {
+            if ($this->Session->check('keyword')) {
+                $this->Session->delete('keyword');
+                $this->Session->write('keyword',$this->data['book']['keyword']);
+            }
+            else {
+                $this->Session->write('keyword',$this->data['book']['keyword']);
+            }
+        }
+        else {
+            if (!strpos($_SERVER['REQUEST_URI'], '/search/')) {
+                $this->Session->delete('keyword');
+            }
+        }
+
+        if ($this->Session->check('keyword')) {
+            $keyword = $this->Session->read('keyword');
+            
+            $this->paginate = array(
+                                'limit' => 4,// mỗi page có 4 record
+                                'order' => array('id' => 'desc'),//giảm dần theo id
+                                'conditions' => array(
+                                                    'Book.title LIKE' => '%' . $keyword . '%'
+                                                )
+                            );
+
+            $book_search = $this->paginate('Book');
+            $this->set("book_search",$book_search);   
+        }
 	}
 
 /**
