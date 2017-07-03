@@ -4,6 +4,23 @@ App::uses('AppController','Controller');
 
 class UsersController extends AppController {
 
+	public function login() {
+		if ($this->request->is('post') && !empty($this->request->data)) {
+			if ($this->Auth->login()) {
+				$this->redirect('/');
+			}else{
+				$this->logout();
+			}
+		}
+	}
+	
+	public function logout() {
+		if ($this->Auth->logout()) {
+			$this->Session->destroy();
+			$this->redirect(array('controller'=>'users','action' => 'login'));
+		}
+	}
+
 	public function register() {
 
 		if (isset($this->request->data['User'])) {
