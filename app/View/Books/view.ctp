@@ -95,3 +95,22 @@
     </div>
 </div> 
 <!-- end related books --> 
+
+<div class = "comment">
+	<h4 class="panel-heading"><i class="glyphicon glyphicon-comment"></i> Nhận xét</h4>
+	<div class="row">	
+		<div class="col col-lg-10">
+			<!-- show comment -->
+			<?php if (!empty($comments)) :?>
+				<?php foreach ($comments as $comment): ?>
+				<p class="comment">
+					<?php echo $comment['User']['username'] . ' : ' . $comment['Comment']['content'];?>
+				</p>
+				<?php endforeach ?>
+		    <?php else: ?>
+				<p class="comment">Chưa có nhận xét nào</p>
+			<?php endif; ?>
+			
+	 	</div>
+	</div>
+</div> 

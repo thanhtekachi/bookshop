@@ -66,7 +66,19 @@ class BooksController extends AppController {
 				 
 		 										)
 									    );
-		$this->set(compact('book_info' , 'related_books'));
+        //get all comment of book
+        $this->loadModel('Comment');
+        $book_id = $book_info['Book']['id'];
+		$comments = $this->Comment->find('all',array(
+				                                      'conditions' => array(
+				                                      		               'Comment.book_id' => $book_id,
+				                                                      )
+				                                       
+				 
+		 										)
+									    );
+
+		$this->set(compact('book_info' , 'related_books' , 'comments'));
 	}
 
 /**
