@@ -27,9 +27,10 @@
 	    <!-- javascript -->
 	    <?php echo $this->Html->script('jquery'); ?>
 	    <?php echo $this->Html->script('bootstrap'); ?>
-        <?php echo $this->Html->script('bookshop'); ?>
+        <?php echo $this->Html->script('book'); ?>
 
         <!-- css -->
+        <?php echo $this->Html->css('b'); ?>
         <?php echo $this->Html->css('font-awesome.min'); ?>
 		<?php echo $this->Html->css('bootstrap.min'); ?>
 		<?php echo $this->Html->css('bookshop'); ?>
@@ -49,6 +50,7 @@
 			<div class="container">
                 <div class="row">
                 	<div class="content col-md-9 col-sm-9 col-xs-12">
+                		<?php echo $this->Session->flash(); ?>
 			            <?php echo $this->fetch('content'); ?>
 			        </div>
 			        <div class="sidebar col-md-3 col-sm-3 col-xs-12">

@@ -29,7 +29,7 @@
 	        	    	}
 	        	    ?>
 	            </p>
-	        	<p>Nhận xét : <?php echo $book_info['Book']['comment_count'] ?></p>
+	        	<p class = "count-comment"> Nhận xét : <?php echo count($book_info['Comment']) ?></p>
 	        	<p>Giá bìa : <?php echo $book_info['Book']['price'] ?></p>
 	        	<p>Giá bán: <?php echo $book_info['Book']['sale_price'] ?></p>
 	    	</div>
@@ -101,16 +101,27 @@
 	<div class="row">	
 		<div class="col col-lg-10">
 			<!-- show comment -->
-			<?php if (!empty($comments)) :?>
-				<?php foreach ($comments as $comment): ?>
-				<p class="comment">
-					<?php echo $comment['User']['username'] . ' : ' . $comment['Comment']['content'];?>
-				</p>
-				<?php endforeach ?>
-		    <?php else: ?>
-				<p class="comment">Chưa có nhận xét nào</p>
-			<?php endif; ?>
-			
+			<div class = "show-comment">
+				<?php if (!empty($book_info['Comment'])) :?>
+					<?php foreach ($comments as $comment): ?>
+					<p>
+						<?php echo $comment['User']['username'] . ' : ' . $comment['Comment']['content'];?>
+					</p>
+					<?php endforeach ?>
+			    <?php else: ?>
+					<p class = "no-comment">Chưa có nhận xét nào</p>
+				<?php endif; ?>
+			</div>
+			<!-- add comment -->
+			<h4>Gửi nhận xét:</h4>
+			<?php echo $this->Form->create('Comment');?>
+				<?php
+					echo $this->Form->input('user_id',array('type' => 'hidden','value' => isset($user_info['id']) ? $user_info['id'] : ''));
+					echo $this->Form->input('book_id',array('type' => 'hidden','value' => $book_info['Book']['id']));
+					echo $this->Form->input('content', array('rows' => "5", 'class' => "col-lg-12", 'label' => false));
+				?>
+			  	<?php echo $this->Form->button('Gửi', array('type' => "submit", 'class' => "pull-right btn btn-primary col-lg-3" ,'onclick' => "return addComment();")); ?>
+			<?php echo $this->Form->end(); ?>
 	 	</div>
 	</div>
 </div> 

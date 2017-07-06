@@ -25,6 +25,9 @@
  * to use (in this case, /app/View/Pages/home.ctp)...
  */
 	Router::connect('/', array('controller' => 'books', 'action' => 'index', 'home'));
+	Router::connect('/dang-ky',array('controller'=>'users','action'=>'register'));
+	Router::connect('/login',array('controller'=>'users','action'=>'login'));
+	Router::connect('/logout',array('controller'=>'users','action'=>'logout'));
 	Router::connect('/categories/:category_name',array('controller'=>'categories','action'=>'index'),array('pass'=>array('category_name')));
 	Router::connect('/:book_title',array('controller'=>'books','action'=>'view'),array('pass'=>array('book_title')));
 /**
