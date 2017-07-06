@@ -32,8 +32,19 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
 
+		public function beforeFilter(){
+
+			$this->Auth->allow('view','index','register','search');
+			$this->Auth->deny('add');
+			$this->set('user_info',$this->Auth->user());
+		}
+
 		public $components = array(
-									'Session'
+									'Session',
+									'Auth' => array(
+												'loginRedirect' => '/',
+												'logoutRedirect' => array('controller' => 'users', 'action' => 'login')
+											)
 		                     );
 
 }
