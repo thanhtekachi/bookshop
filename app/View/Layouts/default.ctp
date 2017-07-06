@@ -30,7 +30,7 @@
         <?php echo $this->Html->script('book'); ?>
 
         <!-- css -->
-        <?php echo $this->Html->css('b'); ?>
+        <?php echo $this->Html->css('custom-flash'); ?>
         <?php echo $this->Html->css('font-awesome.min'); ?>
 		<?php echo $this->Html->css('bootstrap.min'); ?>
 		<?php echo $this->Html->css('bookshop'); ?>
