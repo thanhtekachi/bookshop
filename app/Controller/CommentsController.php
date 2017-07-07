@@ -48,24 +48,57 @@ class CommentsController extends AppController {
 	public function add() {
 		$this->layout = false;
 		$this->autoRender = false;
-		$this->loadModel('User');
+		
 		if ($this->request->is('ajax')) {
 			$this->Comment->create();
 			if ($this->Comment->save($this->request->data)) {
-				//get user info have just comment
-				$user_info = $this->User->find('first', array('condition' => array('id' => $this->request->data['user_id'])
-					                                          
-					                                    )
-				                          );
 				//get count comment of this book
-				$count_comment = $this->Comment->find('count', array('condition' => array('book_id' => $this->request->data['book_id'])
+				$count_comment = $this->Comment->find('count', array('conditions' => array('Comment.book_id' => $this->request->data['book_id'])
 					                                          
 					                                    )
 				                          );
+				//get user info have just comment
+				$this->loadModel('User');
+				$user_info = $this->User->find('first', array('conditions' => array('User.id' => $this->request->data['user_id'])
+					                                          
+					                                    )
+				                          );
+				
 				echo json_encode(array('user_name' => $user_info['User']['username'], 'count_comment' => $count_comment));
 			}
 		}
 		
+	}
+
+/**
+ * loadMoreComment method
+ * it will show maximum 5 comments after one click "load more"
+ * @return comment of current page , the remain of comment
+ */
+	public function loadMoreComment() {
+
+        $this->layout = false;
+		$this->autoRender = false;
+		//total comment of book
+		$total_comment = $result = $this->Comment->find('count',array(
+				                                                    'conditions' => array('Comment.book_id' => $this->request->data['book_id'])
+				                                              )
+		                                                );
+
+		if ($this->request->is('ajax')) {
+			$page = $this->request->data['page'];
+			//get comment in this page
+			$result = $this->Comment->find('all',array(
+				                                      'conditions' => array('Comment.book_id' => $this->request->data['book_id']),
+				                                      'limit' => 5,
+				                                      'offset' => $page*5, 
+				                                )
+		                              );
+			//total comment remain
+            $comment_remain = $total_comment - $page*5 - count($result);
+
+			echo json_encode(array('comment' => $result, 'comment_remain' => $comment_remain));
+		}
 	}
 
 /**

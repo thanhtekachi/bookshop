@@ -21,9 +21,13 @@ $(document).ready(function() {
 });
 
 function addComment() {
+    if ($('#CommentUserId').val() == '') {
+       window.location.href = "/bookshop/login";
+    }
 
     if ($('#CommentContent').val() !== '') {
-       $.ajax({
+
+        $.ajax({
             url: '/bookshop/comments/add',
             type: "POST",
             data: { 
@@ -34,7 +38,7 @@ function addComment() {
             dataType : 'json',
            
             success: function(data) {
-                console.log(data);
+                
                 //remove class show "No Comment"
                 if ($('.no-comment').length > 0) {
                     $('.show-comment').empty();
@@ -44,10 +48,56 @@ function addComment() {
                 $('.count-comment').text('Nhận xét : ' + data.count_comment)
                 //clear form after submit
                 $('#CommentContent').val('');
+                
+                // if total comment of current book > 5,show load-more button
+                if ( $('.show-comment p').length > 5) {
+                    for (var i = 5; i < $('.show-comment p').length; i++) {
+                        $($('.show-comment p')[i]).hide();
+                    }
+                    if ($('.load-comment').length == 0) {
+                        $('.show-comment').append('<button class = "load-comment" onclick = "loadMoreComment()""> Xem Thêm </button>');
+                    }
+                }
+
             },
       
         }); 
+        
     }
     
     return false;
+}
+
+function loadMoreComment() {
+
+    // each page show 5 comments
+    var page = $('.show-comment p').length / 5;
+    
+    $.ajax({
+        url: '/bookshop/comments/loadMoreComment',
+        type: "POST",
+        data: { 
+            page : page,
+            book_id : $('#CommentBookId').val()
+        },
+        dataType : 'json',
+       
+        success: function(data) {
+           
+            //remove button load more before show more comment
+            if (data.comment.length >= 0) {
+                $('.show-comment button').remove();
+            } 
+            //show more comment
+            $.each( data.comment, function( key, value ) {
+                $('.show-comment').append('<p>' + value.User.username + ' : ' + value.Comment.content + '</p>'); 
+            });
+            //if comment is still in the database,show button load more
+            if (data.comment_remain > 0) {
+                $('.show-comment').append('<button class = "load-comment" onclick = "loadMoreComment()""> Xem Thêm </button>');
+            } 
+        },
+  
+    }); 
+    
 }
