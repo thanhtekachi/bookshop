@@ -102,12 +102,17 @@
 		<div class="col col-lg-10">
 			<!-- show comment -->
 			<div class = "show-comment">
-				<?php if (!empty($book_info['Comment'])) :?>
-					<?php foreach ($comments as $comment): ?>
+				<?php if (count($comments) > 0) :?>
+				    <!-- the first show max 5 comments  -->
+					<?php foreach (array_slice($comments, 0, 5) as $comment): ?>
 					<p>
 						<?php echo $comment['User']['username'] . ' : ' . $comment['Comment']['content'];?>
 					</p>
 					<?php endforeach ?>
+                   <!--  if total comment of current book > 5,show load-more button -->
+					<?php if (count($comments) > 5) { 
+						echo "<button class = 'load-comment' onclick = 'loadMoreComment()'> Xem Thêm </button>" ;
+                    } ?>
 			    <?php else: ?>
 					<p class = "no-comment">Chưa có nhận xét nào</p>
 				<?php endif; ?>
