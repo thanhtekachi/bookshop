@@ -34,7 +34,7 @@ class AppController extends Controller {
 
 		public function beforeFilter(){
 
-			$this->Auth->allow('view','index','register','search');
+			$this->Auth->allow('view','index','register','search','loadMoreComment');
 			$this->Auth->deny('add');
 			$this->set('user_info',$this->Auth->user());
 		}
