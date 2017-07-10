@@ -27,7 +27,7 @@
 	    <!-- javascript -->
 	    <?php echo $this->Html->script('jquery'); ?>
 	    <?php echo $this->Html->script('bootstrap'); ?>
-        <?php echo $this->Html->script('book'); ?>
+        <?php echo $this->Html->script('bookshop'); ?>
 
         <!-- css -->
         <?php echo $this->Html->css('custom-flash'); ?>
