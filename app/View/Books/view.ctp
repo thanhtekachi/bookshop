@@ -1,3 +1,30 @@
+<style type="text/css">
+.content-comment {
+	width: 77%;
+	float: left;
+	height: 40px;
+	padding-top: 5px;
+	padding-left: 20px;
+}
+.edit-comment {
+	text-align: center;
+	width: 23%;
+	float: right;
+}
+.a{
+	width: 100%;
+}
+.edit-comment ul {
+    left: 50%;
+    transform:translateX(-50%);
+}
+.dropdown-menu li {
+	text-align: center;
+}
+.dropdown-menu li a:hover { 
+    background-color: #DDDDDD;
+}
+</style>
 <!-- book info -->
 <div class="book-info">
 	<h4 class="panel-heading"><i class="glyphicon glyphicon-bookmark"></i> Chi tiết</h4>
@@ -96,7 +123,7 @@
 </div> 
 <!-- end related books --> 
 
-<div class = "comment">
+<div class = "comment-book">
 	<h4 class="panel-heading"><i class="glyphicon glyphicon-comment"></i> Nhận xét</h4>
 	<div class="row">	
 		<div class="col col-lg-10">
@@ -105,28 +132,42 @@
 				<?php if (count($comments) > 0) :?>
 				    <!-- the first show max 5 comments  -->
 					<?php foreach (array_slice($comments, 0, 5) as $comment): ?>
-					<p>
-						<?php echo $comment['User']['username'] . ' : ' . $comment['Comment']['content'];?>
-					</p>
+						<div class = 'comment'>
+						    <div class = "content-comment">
+								<?php echo $comment['User']['username'] . ' : ' . $comment['Comment']['content'];?>
+							</div>
+					        <div class="edit-comment dropdown">
+							    <div class=" dropdown-toggle" data-toggle="dropdown">
+							    <span class="caret"></span></div>
+							    <ul class="dropdown-menu">
+								    <li><a href="javascript:void(0)">Edit</a></li>
+								    <li><a href="javascript:void(0)" onclick = 'deleteComment(<?php echo $comment['Comment']['id'];?>)'>Delete</a></li>
+							    </ul>
+						    </div>
+					    </div>
 					<?php endforeach ?>
-                   <!--  if total comment of current book > 5,show load-more button -->
+					    <div class="clearfix"></div>
+                    <!--  if total comment of current book > 5,show load-more button -->
 					<?php if (count($comments) > 5) { 
-						echo "<button class = 'load-comment' onclick = 'loadMoreComment()'> Xem Thêm </button>" ;
+						echo "<div class = 'text-center load-comment' onclick = 'loadMoreComment()'><button> Xem Thêm </button></div>" ;
                     } ?>
 			    <?php else: ?>
 					<p class = "no-comment">Chưa có nhận xét nào</p>
 				<?php endif; ?>
 			</div>
+
 			<!-- add comment -->
-			<h4>Gửi nhận xét:</h4>
-			<?php echo $this->Form->create('Comment');?>
-				<?php
-					echo $this->Form->input('user_id',array('type' => 'hidden','value' => isset($user_info['id']) ? $user_info['id'] : ''));
-					echo $this->Form->input('book_id',array('type' => 'hidden','value' => $book_info['Book']['id']));
-					echo $this->Form->input('content', array('rows' => "5", 'class' => "col-lg-12", 'label' => false));
-				?>
-			  	<?php echo $this->Form->button('Gửi', array('type' => "submit", 'class' => "pull-right btn btn-primary col-lg-3" ,'onclick' => "return addComment();")); ?>
-			<?php echo $this->Form->end(); ?>
+			<div class = "add-comment">
+				<h4>Gửi nhận xét:</h4>
+				<?php echo $this->Form->create('Comment');?>
+					<?php
+						echo $this->Form->input('user_id',array('type' => 'hidden','value' => isset($user_info['id']) ? $user_info['id'] : ''));
+						echo $this->Form->input('book_id',array('type' => 'hidden','value' => $book_info['Book']['id']));
+						echo $this->Form->input('content', array('rows' => "5", 'class' => "col-lg-12", 'label' => false));
+					?>
+				  	<?php echo $this->Form->button('Gửi', array('type' => "submit", 'class' => "pull-right btn btn-primary col-lg-3" ,'onclick' => "return addComment();")); ?>
+				<?php echo $this->Form->end(); ?>
+			</div>
 	 	</div>
 	</div>
 </div> 
