@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	//Show 12 best-selling books use carousel effect
+    //Show 12 best-selling books use carousel effect
     $('#Carousel').carousel({
         interval: 3000
     });
@@ -23,12 +23,12 @@ $(document).ready(function() {
 function addComment() {
     //if user not login then can't add comment (redirect login page)
     if ($('#CommentUserId').val() == '') {
-       window.location.href = "/bookshop/login";
+       window.location.href = "./login";
     }
     else {
         if ($('#CommentContent').val() !== '') {
             $.ajax({
-                url: '/bookshop/comments/add',
+                url: './comments/add',
                 type: "POST",
                 data: { 
                     user_id : $('#CommentUserId').val(),
@@ -41,25 +41,41 @@ function addComment() {
                     
                     //remove class show "No Comment"
                     if ($('.no-comment').length > 0) {
-                        $('.show-comment').empty();
+                        $('.no-comment').remove();
                     }
-                    $('.show-comment').prepend('<p>' + data.user_name + ' : ' + $('#CommentContent').val() + '</p>'); 
-                    
+                    $('.show-comment').prepend('<div class = "comment">' +
+                                                    '<div class = "content-comment" >' + data.user_name + ' : ' + $('#CommentContent').val() + '</div>' +
+                                                    '<div class="edit-comment dropdown">' +
+                                                        '<div class=" dropdown-toggle" data-toggle="dropdown">' +
+                                                            '<span class="caret"></span>' +
+                                                        '</div>' + 
+                                                        '<ul class="dropdown-menu">' +
+                                                            '<li><a href="javascript:void(0)">Edit</a></li>' +
+                                                            '<li><a href="javascript:void(0)" onclick = "deleteComment(' + data.id_comment + ')">Delete</a></li>' +
+                                                        '</ul>' +
+                                                    '</div>' +
+                                                '</div>'
+                                        ); 
+                    //update count comment
+                    $('.count-comment').text('Nhận xét : ' + data.count_comment);
+                    //clear form after submit
+                    $('#CommentContent').val('');
+
                     //if total comment of current book > 5,show load-more button
-                    if ( $('.show-comment p').length > 5) {
-                        var data = $('.show-comment p').slice(0, 5);
+                    if ( $('.comment').length > 5) {
+                        $('.clearfix').remove();
+                        //show 5 comments in page
+                        var data = $('.comment').slice(0, 5);
                         $('.show-comment').empty();
                         for (var i=0;i<5;i++) {
                             $('.show-comment').append(data[i]); 
                         }
+                        $('.show-comment').append('<div class="clearfix"></div>');
+                        //show load-more button when total comment >5
                         if ($('.load-comment').length == 0) {
-                            $('.show-comment').append('<button class = "load-comment" onclick = "loadMoreComment()""> Xem Thêm </button>');
+                            $('.show-comment').append("<div class = 'text-center load-comment' onclick = 'loadMoreComment()'><button> Xem Thêm </button></div>");
                         }
                     } 
-                    //update count comment
-                    $('.count-comment').text('Nhận xét : ' + data.count_comment)
-                    //clear form after submit
-                    $('#CommentContent').val('');
                     
                 },
           
@@ -73,10 +89,10 @@ function addComment() {
 function loadMoreComment() {
 
     // each page show 5 comments
-    var page = $('.show-comment p').length / 5;
+    var page = $('.comment').length / 5;
     
     $.ajax({
-        url: '/bookshop/comments/loadMoreComment',
+        url: './comments/loadMoreComment',
         type: "POST",
         data: { 
             page : page,
@@ -85,21 +101,54 @@ function loadMoreComment() {
         dataType : 'json',
        
         success: function(data) {
-           
+            
+            $('.clearfix').remove();
             //remove button load more before show more comment
             if (data.comment.length >= 0) {
                 $('.show-comment button').remove();
             } 
             //show more comment
             $.each( data.comment, function( key, value ) {
-                $('.show-comment').append('<p>' + value.User.username + ' : ' + value.Comment.content + '</p>'); 
+                $('.show-comment').append('<div class = "comment">' +
+                                                '<div class = "content-comment" >' + value.User.username + ' : ' + value.Comment.content + '</div>' +
+                                                '<div class="edit-comment dropdown">' +
+                                                    '<div class=" dropdown-toggle" data-toggle="dropdown">' +
+                                                        '<span class="caret"></span>' +
+                                                    '</div>' + 
+                                                    '<ul class="dropdown-menu">' +
+                                                        '<li><a href="javascript:void(0)">Edit</a></li>' +
+                                                        '<li><a href="javascript:void(0)" onclick = "deleteComment(' + value.Comment.id + ')">Delete</a></li>' +
+                                                    '</ul>' +
+                                                '</div>' +
+                                            '</div>'
+                                        );
+
             });
+            $('.show-comment').append('<div class="clearfix"></div>');
             //if comment is still in the database,show button load more
             if (data.comment_remain > 0) {
-                $('.show-comment').append('<button class = "load-comment" onclick = "loadMoreComment()""> Xem Thêm </button>');
+                $('.show-comment').append("<div class = 'text-center load-comment' onclick = 'loadMoreComment()'><button> Xem Thêm </button></div>");
             } 
         },
   
     }); 
+}
+
+function deleteComment(id_comment) {
     
+    var id_comment = id_comment;
+    $.ajax({
+        url: './comments/delete',
+        type: "POST",
+        data: { 
+            id_comment : id_comment,
+        },
+        dataType : 'json',
+       
+        success: function(data) {
+
+            
+        },
+  
+    }); 
 }
