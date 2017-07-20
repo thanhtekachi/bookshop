@@ -26,7 +26,7 @@
 }
 </style>
 <!-- book info -->
-<div class="book-info">
+<div class="book-info" id = <?php echo '"' . $book_info['Book']['id'] .'"'?>>
 	<h4 class="panel-heading"><i class="glyphicon glyphicon-bookmark"></i> Chi tiết</h4>
 	<div class="row"> 
 		<div class="col col-lg-3">

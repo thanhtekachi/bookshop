@@ -42,6 +42,7 @@ function addComment() {
                     //remove class show "No Comment"
                     if ($('.no-comment').length > 0) {
                         $('.no-comment').remove();
+                        $('.show-comment').append('<div class="clearfix"></div>');
                     }
                     $('.show-comment').prepend('<div class = "comment">' +
                                                     '<div class = "content-comment" >' + data.user_name + ' : ' + $('#CommentContent').val() + '</div>' +
@@ -134,21 +135,60 @@ function loadMoreComment() {
     }); 
 }
 
-function deleteComment(id_comment) {
-    
-    var id_comment = id_comment;
-    $.ajax({
-        url: './comments/delete',
-        type: "POST",
-        data: { 
-            id_comment : id_comment,
-        },
-        dataType : 'json',
-       
-        success: function(data) {
+function deleteComment(comment_id) {
 
-            
-        },
-  
-    }); 
+    var book_id = $('.book-info').attr('id');
+    var comment_id = comment_id;
+    swal({
+        title: "Are you sure delete this comment?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        closeOnConfirm: false,
+        closeOnCancel: false
+    },
+    function(isConfirm){
+        if (isConfirm) {
+            $.ajax({
+                url: './comments/delete',
+                type: "POST",
+                data: { 
+                    comment_id : comment_id,
+                    book_id    : book_id
+                },
+                dataType : 'json',
+               
+                success: function(data) {
+                    
+                    $('.show-comment').empty();
+                    
+                    $.each( data.comment, function( key, value ) {
+                        $('.show-comment').append('<div class = "comment">' +
+                                                        '<div class = "content-comment" >' + value.User.username + ' : ' + value.Comment.content + '</div>' +
+                                                        '<div class="edit-comment dropdown">' +
+                                                            '<div class=" dropdown-toggle" data-toggle="dropdown">' +
+                                                                '<span class="caret"></span>' +
+                                                            '</div>' + 
+                                                            '<ul class="dropdown-menu">' +
+                                                                '<li><a href="javascript:void(0)">Edit</a></li>' +
+                                                                '<li><a href="javascript:void(0)" onclick = "deleteComment(' + value.Comment.id + ')">Delete</a></li>' +
+                                                            '</ul>' +
+                                                        '</div>' +
+                                                    '</div>'
+                                                );
+
+                    });
+                    $('.show-comment').append('<div class="clearfix"></div>');
+                    
+                },
+          
+            }); 
+            swal("Deleted!", "Your comment has been deleted.", "success");
+        } else {
+            swal("Cancel", "", "error");
+        }
+    });
+    
 }
