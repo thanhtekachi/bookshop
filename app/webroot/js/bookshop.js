@@ -20,7 +20,7 @@ $(document).ready(function() {
     });
 });
 
-function addComment() {
+function addComment(user_id_login) {
     //if user not login then can't add comment (redirect login page)
     if ($('#CommentUserId').val() == '') {
        window.location.href = "./login";
@@ -46,7 +46,7 @@ function addComment() {
                     }
                     $('.show-comment').prepend('<div class = "comment">' +
                                                     '<div class = "content-comment" >' + data.user_name + ' : ' + $('#CommentContent').val() + '</div>' +
-                                                    '<div class="edit-comment dropdown">' +
+                                                    '<div class="edit-comment dropdown" id = "'+ data.id_comment +'">' +
                                                         '<div class=" dropdown-toggle" data-toggle="dropdown">' +
                                                             '<span class="caret"></span>' +
                                                         '</div>' + 
@@ -74,7 +74,7 @@ function addComment() {
                         $('.show-comment').append('<div class="clearfix"></div>');
                         //show load-more button when total comment >5
                         if ($('.load-comment').length == 0) {
-                            $('.show-comment').append("<div class = 'text-center load-comment' onclick = 'loadMoreComment()'><button> Xem Thêm </button></div>");
+                            $('.show-comment').append("<div class = 'text-center load-comment' onclick = 'loadMoreComment(" + user_id_login + ")'><button> Xem Thêm </button></div>");
                         }
                     } 
                     
@@ -87,8 +87,8 @@ function addComment() {
     return false;
 }
 
-function loadMoreComment() {
-
+function loadMoreComment(user_id_login) {
+    
     // each page show 5 comments
     var page = $('.comment').length / 5;
     
@@ -110,9 +110,10 @@ function loadMoreComment() {
             } 
             //show more comment
             $.each( data.comment, function( key, value ) {
+                
                 $('.show-comment').append('<div class = "comment">' +
                                                 '<div class = "content-comment" >' + value.User.username + ' : ' + value.Comment.content + '</div>' +
-                                                '<div class="edit-comment dropdown">' +
+                                                '<div class="edit-comment dropdown" id = "'+ value.Comment.id +'">' +
                                                     '<div class=" dropdown-toggle" data-toggle="dropdown">' +
                                                         '<span class="caret"></span>' +
                                                     '</div>' + 
@@ -123,20 +124,30 @@ function loadMoreComment() {
                                                 '</div>' +
                                             '</div>'
                                         );
+                //hide class delete comment if user comment different current user login 
+                if (typeof(user_id_login) !== 'undefined') {
+                    if (value.User.id != user_id_login) {
+                        $('.edit-comment#'+value.Comment.id).remove();
+                    }
+                }
+                //hide all class delete comment if user not login
+                else {
+                    $('.edit-comment').remove();
+                }
 
             });
             $('.show-comment').append('<div class="clearfix"></div>');
             //if comment is still in the database,show button load more
             if (data.comment_remain > 0) {
-                $('.show-comment').append("<div class = 'text-center load-comment' onclick = 'loadMoreComment()'><button> Xem Thêm </button></div>");
+                $('.show-comment').append("<div class = 'text-center load-comment' onclick = 'loadMoreComment(" + user_id_login + ")'><button> Xem Thêm </button></div>");
             } 
         },
   
     }); 
 }
 
-function deleteComment(comment_id) {
-
+function deleteComment(comment_id,user_id_login) {
+    
     var book_id = $('.book-info').attr('id');
     var comment_id = comment_id;
     swal({
@@ -167,17 +178,23 @@ function deleteComment(comment_id) {
                     $.each( data.comment, function( key, value ) {
                         $('.show-comment').append('<div class = "comment">' +
                                                         '<div class = "content-comment" >' + value.User.username + ' : ' + value.Comment.content + '</div>' +
-                                                        '<div class="edit-comment dropdown">' +
+                                                        '<div class="edit-comment dropdown" id = "'+ value.Comment.id +'">' +
                                                             '<div class=" dropdown-toggle" data-toggle="dropdown">' +
                                                                 '<span class="caret"></span>' +
                                                             '</div>' + 
                                                             '<ul class="dropdown-menu">' +
                                                                 '<li><a href="javascript:void(0)">Edit</a></li>' +
-                                                                '<li><a href="javascript:void(0)" onclick = "deleteComment(' + value.Comment.id + ')">Delete</a></li>' +
+                                                                '<li><a href="javascript:void(0)" onclick = "deleteComment(' + value.Comment.id + ',' + user_id_login +')">Delete</a></li>' +
                                                             '</ul>' +
                                                         '</div>' +
                                                     '</div>'
                                                 );
+                        //hide class delete comment if user comment different current user login 
+                        if (typeof(user_id_login) !== 'undefined') {
+                            if (value.User.id != user_id_login) {
+                                $('.edit-comment#'+value.Comment.id).remove();
+                            }
+                        }
 
                     });
                     $('.show-comment').append('<div class="clearfix"></div>');

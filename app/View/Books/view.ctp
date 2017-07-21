@@ -136,20 +136,22 @@
 						    <div class = "content-comment">
 								<?php echo $comment['User']['username'] . ' : ' . $comment['Comment']['content'];?>
 							</div>
-					        <div class="edit-comment dropdown">
-							    <div class=" dropdown-toggle" data-toggle="dropdown">
-							    <span class="caret"></span></div>
-							    <ul class="dropdown-menu">
-								    <li><a href="javascript:void(0)">Edit</a></li>
-								    <li><a href="javascript:void(0)" onclick = 'deleteComment(<?php echo $comment['Comment']['id'];?>)'>Delete</a></li>
-							    </ul>
-						    </div>
+							<?php if ($comment['User']['id'] == $user_info['id']) :?>
+						        <div class="edit-comment dropdown">
+								    <div class=" dropdown-toggle" data-toggle="dropdown">
+								    <span class="caret"></span></div>
+								    <ul class="dropdown-menu">
+									    <li><a href="javascript:void(0)">Edit</a></li>
+									    <li><a href="javascript:void(0)" onclick = 'deleteComment(<?php echo $comment['Comment']['id'] . ','.$user_info['id'];?>)'>Delete</a></li>
+								    </ul>
+							    </div>
+							<?php endif; ?>
 					    </div>
 					<?php endforeach ?>
 					    <div class="clearfix"></div>
                     <!--  if total comment of current book > 5,show load-more button -->
 					<?php if (count($comments) > 5) { 
-						echo "<div class = 'text-center load-comment' onclick = 'loadMoreComment()'><button> Xem Thêm </button></div>" ;
+						echo "<div class = 'text-center load-comment' onclick = 'loadMoreComment(". $user_info['id'] .")'><button> Xem Thêm </button></div>" ;
                     } ?>
 			    <?php else: ?>
 					<p class = "no-comment">Chưa có nhận xét nào</p>
@@ -165,7 +167,7 @@
 						echo $this->Form->input('book_id',array('type' => 'hidden','value' => $book_info['Book']['id']));
 						echo $this->Form->input('content', array('rows' => "5", 'class' => "col-lg-12", 'label' => false));
 					?>
-				  	<?php echo $this->Form->button('Gửi', array('type' => "submit", 'class' => "pull-right btn btn-primary col-lg-3" ,'onclick' => "return addComment();")); ?>
+				  	<?php echo $this->Form->button('Gửi', array('type' => "submit", 'class' => "pull-right btn btn-primary col-lg-3" ,'onclick' => "return addComment(".$user_info['id'].");")); ?>
 				<?php echo $this->Form->end(); ?>
 			</div>
 	 	</div>
