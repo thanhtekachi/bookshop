@@ -52,6 +52,8 @@ class CommentsController extends AppController {
 		if ($this->request->is('ajax')) {
 			$this->Comment->create();
 			if ($this->Comment->save($this->request->data)) {
+                //get id of comment just add 
+				$id_comment = $this->Comment->id;
 				//get count comment of this book
 				$count_comment = $this->Comment->find('count', array('conditions' => array('Comment.book_id' => $this->request->data['book_id'])
 					                                          
@@ -64,7 +66,7 @@ class CommentsController extends AppController {
 					                                    )
 				                          );
 				
-				echo json_encode(array('user_name' => $user_info['User']['username'], 'count_comment' => $count_comment));
+				echo json_encode(array('user_name' => $user_info['User']['username'], 'count_comment' => $count_comment, 'id_comment' => $id_comment));
 			}
 		}
 		
@@ -132,20 +134,23 @@ class CommentsController extends AppController {
  * delete method
  *
  * @throws NotFoundException
- * @param string $id
  * @return void
  */
-	public function delete($id = null) {
-		$this->Comment->id = $id;
-		if (!$this->Comment->exists()) {
-			throw new NotFoundException(__('Invalid comment'));
+	public function delete() {
+		
+		$this->layout = false;
+		$this->autoRender = false;
+		if ($this->request->is('ajax')) {
+			$this->Comment->id = $this->request->data['comment_id'];
+			if ($this->Comment->delete()) {
+			    $comment = $this->Comment->find('all',array(
+				                                            'conditions' => array('Comment.book_id' => $this->request->data['book_id']),
+				                                        	'limit' => 5,
+				                                        	'order' => 'Comment.id DESC'
+				                                	)
+		                                	);
+			    echo json_encode(array('comment' => $comment));
+		    } 
 		}
-		$this->request->allowMethod('post', 'delete');
-		if ($this->Comment->delete()) {
-			$this->Session->setFlash(__('The comment has been deleted.'));
-		} else {
-			$this->Session->setFlash(__('The comment could not be deleted. Please, try again.'));
-		}
-		return $this->redirect(array('action' => 'index'));
 	}
 }
