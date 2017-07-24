@@ -28,12 +28,14 @@
 	    <?php echo $this->Html->script('jquery'); ?>
 	    <?php echo $this->Html->script('bootstrap'); ?>
         <?php echo $this->Html->script('bookshop'); ?>
+        <?php echo $this->Html->script('sweetalert.min'); ?>
 
         <!-- css -->
         <?php echo $this->Html->css('custom-flash'); ?>
         <?php echo $this->Html->css('font-awesome.min'); ?>
 		<?php echo $this->Html->css('bootstrap.min'); ?>
 		<?php echo $this->Html->css('bookshop'); ?>
+		<?php echo $this->Html->css('sweetalert'); ?>
 		
 		<?php
 			echo $this->fetch('meta');
