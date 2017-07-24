@@ -94,6 +94,7 @@ class CommentsController extends AppController {
 				                                      'conditions' => array('Comment.book_id' => $this->request->data['book_id']),
 				                                      'limit' => 5,
 				                                      'offset' => $page*5, 
+				                                      'order'  => 'Comment.id DESC'
 				                                )
 		                              );
 			//total comment remain
