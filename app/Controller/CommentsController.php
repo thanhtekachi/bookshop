@@ -150,7 +150,11 @@ class CommentsController extends AppController {
 				                                        	'order' => 'Comment.id DESC'
 				                                	)
 		                                	);
-			    echo json_encode(array('comment' => $comment));
+			    $total_comment = $this->Comment->find('count',array(
+				                                            'conditions' => array('Comment.book_id' => $this->request->data['book_id'])
+				                                	)
+		                                	);
+			    echo json_encode(array('comment' => $comment , 'total_comment' => $total_comment));
 		    } 
 		}
 	}

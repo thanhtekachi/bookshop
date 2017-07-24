@@ -172,7 +172,7 @@ function deleteComment(comment_id,user_id_login) {
                 dataType : 'json',
                
                 success: function(data) {
-                    
+                    console.log(data);
                     $('.show-comment').empty();
                     
                     $.each( data.comment, function( key, value ) {
@@ -198,6 +198,10 @@ function deleteComment(comment_id,user_id_login) {
 
                     });
                     $('.show-comment').append('<div class="clearfix"></div>');
+                    //if total comment of current book > 5,show load-more button
+                    if (data.total_comment > 5) {
+                        $('.show-comment').append("<div class = 'text-center load-comment' onclick = 'loadMoreComment(" + user_id_login + ")'><button> Xem Thêm </button></div>");
+                    } 
                     
                 },
           
