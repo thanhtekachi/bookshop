@@ -221,25 +221,46 @@ function editComment(comment_id,user_id) {
     $('#' + comment_id + '.content-comment').append('<input style="width: 100%;height: 100%" autofocus onfocus = "this.value = this.value;" type = "text" value = ' + content_comment + '>');
     $('input').keypress(function(event){
         if (event.which == 13) {
-            var content_comment_edit = $('#' + comment_id + '.content-comment input').val();
-            $.ajax({
-                url: './comments/edit',
-                    type: "POST",
-                    data: { 
-                        content : content_comment_edit,
-                        comment_id : comment_id
-                    },
-                    dataType : 'json',
-                   
-                    success: function(data) {
+            swal({
+                title: "Are you sure update this comment?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+            function(isConfirm) {
+                    if (isConfirm) {
+                        var content_comment_edit = $('#' + comment_id + '.content-comment input').val();
+                        $.ajax({
+                            url: './comments/edit',
+                                type: "POST",
+                                data: { 
+                                    content : content_comment_edit,
+                                    comment_id : comment_id
+                                },
+                                dataType : 'json',
+                               
+                                success: function(data) {
 
-                        if (data.status == 1) {
-                            $('#' + comment_id + '.content-comment').append(data.content_comment);
-                            $('#' + comment_id + '.content-comment input').remove();
-                        }
-                    },
-              
-            }); 
+                                    if (data.status == 1) {
+                                        $('#' + comment_id + '.content-comment').append(data.content_comment);
+                                        $('#' + comment_id + '.content-comment input').remove();
+                                    }
+                                    swal("Updated!", "Your comment has been Updated", "success");
+                                },
+                          
+                        });
+                    }
+                    else {
+                        swal("Cancel", "", "error");
+                        $('#' + comment_id + '.content-comment').append(content_comment);
+                        $('#' + comment_id + '.content-comment input').remove();
+                    }
+
+            });
         }
         
     });
