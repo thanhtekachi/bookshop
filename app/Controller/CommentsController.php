@@ -106,29 +106,19 @@ class CommentsController extends AppController {
 
 /**
  * edit method
- *
- * @throws NotFoundException
- * @param string $id
  * @return void
  */
-	public function edit($id = null) {
-		if (!$this->Comment->exists($id)) {
-			throw new NotFoundException(__('Invalid comment'));
-		}
-		if ($this->request->is(array('post', 'put'))) {
-			if ($this->Comment->save($this->request->data)) {
-				$this->Session->setFlash(__('The comment has been saved.'));
-				return $this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The comment could not be saved. Please, try again.'));
+	public function edit() {
+		
+		$this->layout = false;
+		$this->autoRender = false;
+		if ($this->request->is('ajax')) {
+			$this->Comment->id = $this->request->data['comment_id'];
+			if ($this->Comment->saveField('content', $this->request->data['content'])) {
+                echo json_encode(array('status' => 1 , 'content_comment' => $this->request->data['content']));
 			}
-		} else {
-			$options = array('conditions' => array('Comment.' . $this->Comment->primaryKey => $id));
-			$this->request->data = $this->Comment->find('first', $options);
-		}
-		$users = $this->Comment->User->find('list');
-		$books = $this->Comment->Book->find('list');
-		$this->set(compact('users', 'books'));
+			
+		} 
 	}
 
 /**

@@ -45,7 +45,7 @@ function addComment(user_id_login) {
                         $('.show-comment').append('<div class="clearfix"></div>');
                     }
                     $('.show-comment').prepend('<div class = "comment">' +
-                                                    '<div class = "content-comment" >' + data.user_name + ' : ' + $('#CommentContent').val() + '</div>' +
+                                                    '<div class = "detail-comment" >' + data.user_name + ' : ' + $('#CommentContent').val() + '</div>' +
                                                     '<div class="edit-comment dropdown" id = "'+ data.id_comment +'">' +
                                                         '<div class=" dropdown-toggle" data-toggle="dropdown">' +
                                                             '<span class="caret"></span>' +
@@ -112,7 +112,7 @@ function loadMoreComment(user_id_login) {
             $.each( data.comment, function( key, value ) {
                 
                 $('.show-comment').append('<div class = "comment">' +
-                                                '<div class = "content-comment" >' + value.User.username + ' : ' + value.Comment.content + '</div>' +
+                                                '<div class = "detail-comment" >' + value.User.username + ' : ' + value.Comment.content + '</div>' +
                                                 '<div class="edit-comment dropdown" id = "'+ value.Comment.id +'">' +
                                                     '<div class=" dropdown-toggle" data-toggle="dropdown">' +
                                                         '<span class="caret"></span>' +
@@ -177,7 +177,7 @@ function deleteComment(comment_id,user_id_login) {
                     
                     $.each( data.comment, function( key, value ) {
                         $('.show-comment').append('<div class = "comment">' +
-                                                        '<div class = "content-comment" >' + value.User.username + ' : ' + value.Comment.content + '</div>' +
+                                                        '<div class = "detail-comment" >' + value.User.username + ' : ' + value.Comment.content + '</div>' +
                                                         '<div class="edit-comment dropdown" id = "'+ value.Comment.id +'">' +
                                                             '<div class=" dropdown-toggle" data-toggle="dropdown">' +
                                                                 '<span class="caret"></span>' +
@@ -212,4 +212,35 @@ function deleteComment(comment_id,user_id_login) {
         }
     });
     
+}
+
+function editComment(comment_id,user_id) {
+
+    var content_comment = $('#' + comment_id + '.content-comment').text();
+    $('#' + comment_id + '.content-comment').empty();
+    $('#' + comment_id + '.content-comment').append('<input style="width: 100%;height: 100%" autofocus onfocus = "this.value = this.value;" type = "text" value = ' + content_comment + '>');
+    $('input').keypress(function(event){
+        if (event.which == 13) {
+            var content_comment_edit = $('#' + comment_id + '.content-comment input').val();
+            $.ajax({
+                url: './comments/edit',
+                    type: "POST",
+                    data: { 
+                        content : content_comment_edit,
+                        comment_id : comment_id
+                    },
+                    dataType : 'json',
+                   
+                    success: function(data) {
+
+                        if (data.status == 1) {
+                            $('#' + comment_id + '.content-comment').append(data.content_comment);
+                            $('#' + comment_id + '.content-comment input').remove();
+                        }
+                    },
+              
+            }); 
+        }
+        
+    });
 }

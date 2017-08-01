@@ -70,11 +70,10 @@ class BooksController extends AppController {
         $this->loadModel('Comment');
         $book_id = $book_info['Book']['id'];
 		$comments = $this->Comment->find('all',array(
-				                                      'conditions' => array(
-				                                      		               'Comment.book_id' => $book_id,
-				                                                      )
-				                                       
-				 
+				                                    'conditions' => array(
+				                                      		              'Comment.book_id' => $book_id,
+				                                                    ),
+				                                    'order' => 'Comment.id DESC'
 		 										)
 									    );
 

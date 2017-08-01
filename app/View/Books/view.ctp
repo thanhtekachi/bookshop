@@ -1,5 +1,5 @@
 <style type="text/css">
-.content-comment {
+.detail-comment {
 	width: 77%;
 	float: left;
 	height: 40px;
@@ -23,6 +23,17 @@
 }
 .dropdown-menu li a:hover { 
     background-color: #DDDDDD;
+}
+.account-comment {
+    border: 1px solid red;
+    width: 30%;
+    height: 100%;
+    float: left;
+}
+.content-comment {
+    width: 70%;
+    height: 100%;
+    float: right;
 }
 </style>
 <!-- book info -->
@@ -133,16 +144,17 @@
 				    <!-- the first show max 5 comments  -->
 					<?php foreach (array_slice($comments, 0, 5) as $comment): ?>
 						<div class = 'comment'>
-						    <div class = "content-comment">
-								<?php echo $comment['User']['username'] . ' : ' . $comment['Comment']['content'];?>
+						    <div class = "detail-comment">
+						        <div class = "account-comment"><?php echo $comment['User']['username'] ?></div>
+								<div id = <?php echo '"' . $comment['Comment']['id'] . '"'?> class = "content-comment" ><?php echo $comment['Comment']['content'];?></div>
 							</div>
 							<?php if ($comment['User']['id'] == $user_info['id']) :?>
 						        <div class="edit-comment dropdown">
 								    <div class=" dropdown-toggle" data-toggle="dropdown">
 								    <span class="caret"></span></div>
 								    <ul class="dropdown-menu">
-									    <li><a href="javascript:void(0)">Edit</a></li>
-									    <li><a href="javascript:void(0)" onclick = 'deleteComment(<?php echo $comment['Comment']['id'] . ','.$user_info['id'];?>)'>Delete</a></li>
+									    <li><a href="javascript:void(0)" onclick = 'editComment(<?php echo $comment['Comment']['id'] .','. $user_info['id'];?>)'>Edit</a></li>
+									    <li><a href="javascript:void(0)" onclick = 'deleteComment(<?php echo $comment['Comment']['id'] . ','. $user_info['id'];?>)'>Delete</a></li>
 								    </ul>
 							    </div>
 							<?php endif; ?>
